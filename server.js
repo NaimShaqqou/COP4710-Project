@@ -30,6 +30,9 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, './frontend/build')));
+
 // ADD API ENDPOINTS UNDER HERE
 // EXAMPLES:
 app.get("/api", (req, res) => {
@@ -42,5 +45,5 @@ app.post("/api/example", async (req, res, next) => {
 
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
+  res.sendFile(path.resolve(__dirname, './frontend/build', 'index.html'));
 });

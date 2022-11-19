@@ -5,6 +5,11 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
+// const MongoClient = require('mongodb').MongoClient;
+// const url = "mongodb url";
+// const client = new MongoClient(url);
+// client.connect();
+
 app.set('port', PORT)
 
 // Static Files
@@ -19,11 +24,6 @@ app.set("view engine", "ejs");
 app.get("", (req, res) => {
     res.render("index", { apires: ""});
 })
-
-// const MongoClient = require('mongodb').MongoClient;
-// const url = "mongodb url";
-// const client = new MongoClient(url);
-// client.connect();
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);

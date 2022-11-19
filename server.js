@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser"); // to parse json
 const cors = require("cors"); // prevents cors errors
 require("dotenv").config();
+const path = require("path");
 
 // const path = require('path');           
 const PORT = process.env.PORT || 5000;  

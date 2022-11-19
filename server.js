@@ -12,17 +12,8 @@ const app = express();
 
 app.set('port', PORT)
 
-// Static Files
-app.use(express.static("public"));
-app.use("/css", express.static(__dirname + "public/css"));
-app.use("/js", express.static(__dirname + "public/js"));
-app.use("/img", express.static(__dirname + "public/img"));
-
-app.set("views", "./pages")
-app.set("view engine", "ejs");
-
 app.get("", (req, res) => {
-    res.render("index", { apires: ""});
+    res.json({ message: "Hello from server!" });
 })
 
 app.listen(PORT, () => {

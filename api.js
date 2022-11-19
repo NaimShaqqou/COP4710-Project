@@ -1,4 +1,4 @@
-export function setApp (app, client) {
+exports.setApp = function (app, client) {
     // import mongoDB schemas and models
 
     // ADD API ENDPOINTS UNDER HERE

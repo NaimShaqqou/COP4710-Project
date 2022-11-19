@@ -13,8 +13,11 @@ app.use("/css", express.static(__dirname + "public/css"));
 app.use("/js", express.static(__dirname + "public/js"));
 app.use("/img", express.static(__dirname + "public/img"));
 
+app.set("views", "./pages")
+app.set("view engine", "ejs");
+
 app.get("", (req, res) => {
-    res.sendFile(__dirname + '/pages/index.html');
+    res.render("index", { apires: ""});
 })
 
 // const MongoClient = require('mongodb').MongoClient;
@@ -28,17 +31,7 @@ app.listen(PORT, () => {
 
 // ADD API ENDPOINTS UNDER HERE
 // EXAMPLE:
-app.get("/api/example", async (req, res, next) => {
+app.post("/api/example", async (req, res, next) => {
     console.log("called example api");
+    res.render("index", {apires: "Called example api"})
 });
-
-// For Heroku deployment
-// Server static assets if in production
-// if (process.env.NODE_ENV === 'production') 
-// {
-//     // Set static folder
-//     app.use(express.static('frontend/build'));
-//     app.get('*', (req, res) => {
-//         res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
-//     });
-// }

@@ -12,17 +12,38 @@ const app = express();
 
 app.set('port', PORT)
 
-app.get("", (req, res) => {
-    res.json({ message: "Hello from server!" });
-})
+app.use((req, res, next) => 
+{
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PATCH, DELETE, OPTIONS'
+  );
+  next();
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, '../frontend/build')));
+
 // ADD API ENDPOINTS UNDER HERE
-// EXAMPLE:
+// EXAMPLES:
+app.get("/api", (req, res) => {
+  res.json({ message: "Hello from server!" });
+})
+
 app.post("/api/example", async (req, res, next) => {
     console.log("called example api");
-    res.render("index", {apires: "Called example api"})
+});
+
+// All other GET requests not handled before will return our React app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
 });

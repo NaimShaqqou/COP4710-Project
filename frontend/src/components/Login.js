@@ -7,6 +7,7 @@ function Login()
     var loginPassword;
     const [message,setMessage] = useState('');
     
+    console.log(buildPath("api/login"))
     const doLogin = async event => 
     {
         event.preventDefault();

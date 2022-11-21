@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { buildPath } from "../buildPath"
+
 function Login()
 {
     var loginName;
@@ -12,7 +14,7 @@ function Login()
         let js = JSON.stringify(obj);
         try
         {    
-            const response = await fetch('http://localhost:5000/api/login',
+            const response = await fetch(buildPath("api/login"),
                 {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
             let res = JSON.parse(await response.text());
             if( res.id <= 0 )

@@ -7,7 +7,6 @@ function Login()
     var loginPassword;
     const [message,setMessage] = useState('');
     
-    console.log(buildPath("api/login"))
     const doLogin = async event => 
     {
         event.preventDefault();
@@ -27,7 +26,7 @@ function Login()
                 let user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
                 localStorage.setItem('user_data', JSON.stringify(user));
                 setMessage('');
-                window.location.href = '/test';
+                // window.location.href = '/test';
             }
         }
         catch(e)

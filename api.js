@@ -1,15 +1,5 @@
 exports.setApp = function (app, db) {
-    // import mongoDB schemas and models
-
     // ADD API ENDPOINTS UNDER HERE
-    // EXAMPLES:
-    app.get("/api", (req, res) => {
-        res.json({ message: "Hello from server! (This is from an api call)" });
-    })
-    
-    app.post("/api/example", async (req, res, next) => {
-        console.log("called example api");
-    });
 
     //////////////////STILL NEEDS WORK//////////////////////////
     //--------------------login/password API--------------------//
@@ -40,6 +30,65 @@ exports.setApp = function (app, db) {
         } catch(e) {
             res.status(400).json({error: 'An error occured'});
         }
+    });
+
+    app.post("/api/register", async (req, res, next) => {
+        // incoming: email, password, firstName, lastName, login
+        // outgoing: userId, error
+
+        const { email, password, firstName, lastName, login } = req.body;
+        let valid = true;
+
+        // duplicate username/email
+        await db.collection('User').findOne({login : login.toLowerCase()}).then((user)=>{
+            if (user != null)
+            {
+                valid = false;
+                return res.status(200).json({ id: "-1", error: "Username already exists. Please enter a different username." });
+            }
+        }).catch(err=>{
+            return res.status(200).json({ id: "-1", error: err.message});
+        }) 
+
+        if (valid){
+            await db.collection('User').findOne({email : email.toLowerCase()}).then((user)=>{
+            if (user != null)
+            {
+                valid = false;
+                return res.status(200).json({ id: "-1", error: "Email already exists. Please enter a different email." });
+            }
+            }).catch(err=>{
+                return res.status(200).json({ id: "-1", error: err.message});
+            }) 
+        }
+    
+        if (valid)
+        {
+            const result = db.collection('User').insertOne(
+            {
+                firstName: firstName, 
+                lastName: lastName, 
+                login: login.toLowerCase(), 
+                password: password, 
+                email: email.toLowerCase(),
+            },
+            function (err, user) {
+                if (err) {
+                    response = {
+                        id: "-1",
+                        error: err.message
+                    };
+                } else {
+                    console.log(user)
+                    response = {
+                        id: user.insertedId,
+                        error: ""
+                    };
+                }
+                res.status(200).json(response);
+            }
+            );
+        } 
     });
 }
 

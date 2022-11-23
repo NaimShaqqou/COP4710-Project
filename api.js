@@ -33,30 +33,20 @@ exports.setApp = function (app, db) {
     });
 
     app.post("/api/register", async (req, res, next) => {
-        // incoming: email, password, firstName, lastName, login
+        // incoming: email, password, firstName, lastName
         // outgoing: userId, error
 
-        const { email, password, firstName, lastName, login } = req.body;
+        const { email, password, firstName, lastName } = req.body;
         let valid = true;
 
-        // duplicate username/email
-        await db.collection('User').findOne({login : login.toLowerCase()}).then((user)=>{
-            if (user != null)
-            {
-                valid = false;
-                return res.status(200).json({ id: "-1", error: "Username already exists. Please enter a different username." });
-            }
-        }).catch(err=>{
-            return res.status(200).json({ id: "-1", error: err.message});
-        }) 
-
-        if (valid){
+        // duplicate email
+        if (valid) {
             await db.collection('User').findOne({email : email.toLowerCase()}).then((user)=>{
-            if (user != null)
-            {
-                valid = false;
-                return res.status(200).json({ id: "-1", error: "Email already exists. Please enter a different email." });
-            }
+                if (user != null)
+                {
+                    valid = false;
+                    return res.status(200).json({ id: "-1", error: "Email already exists. Please enter a different email." });
+                }
             }).catch(err=>{
                 return res.status(200).json({ id: "-1", error: err.message});
             }) 
@@ -65,28 +55,27 @@ exports.setApp = function (app, db) {
         if (valid)
         {
             const result = db.collection('User').insertOne(
-            {
-                firstName: firstName, 
-                lastName: lastName, 
-                login: login.toLowerCase(), 
-                password: password, 
-                email: email.toLowerCase(),
-            },
-            function (err, user) {
-                if (err) {
-                    response = {
-                        id: "-1",
-                        error: err.message
-                    };
-                } else {
-                    console.log(user)
-                    response = {
-                        id: user.insertedId,
-                        error: ""
-                    };
+                {
+                    firstName: firstName, 
+                    lastName: lastName, 
+                    password: password, 
+                    email: email.toLowerCase(),
+                },
+                function (err, user) {
+                    if (err) {
+                        response = {
+                            id: "-1",
+                            error: err.message
+                        };
+                    } else {
+                        console.log(user)
+                        response = {
+                            id: user.insertedId,
+                            error: ""
+                        };
+                    }
+                    res.status(200).json(response);
                 }
-                res.status(200).json(response);
-            }
             );
         } 
     });

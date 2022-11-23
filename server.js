@@ -11,7 +11,6 @@ client.connect();
 dbConnection = client.db("LargeProject");
 console.log("Successfully connected to MongoDB.");
 
-// const path = require('path');           
 const PORT = process.env.PORT || 5000;  
 
 const app = express();

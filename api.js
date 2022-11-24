@@ -1,85 +1,97 @@
 exports.setApp = function (app, db) {
-    // ADD API ENDPOINTS UNDER HERE
+  // ADD API ENDPOINTS UNDER HERE
 
-    //////////////////STILL NEEDS WORK//////////////////////////
-    //--------------------login/password API--------------------//
-    app.post('/api/login', async (req, res, next) => {
-        // incoming: login, password
-        // outgoing: id, firstName, lastName, error
-        let error = '';
-        const { login, password } = req.body;
-        try {
-            const results = await db.collection('User').find({login: login}).toArray();
+  //--------------------login/password API--------------------//
+  app.post("/api/login", async (req, res, next) => {
+    // incoming: email, password
+    // outgoing: id, firstName, lastName, error
+    let error = "";
 
-            let id = -1;
-            let fn = '';
-            let ln = '';
-            if (results.length > 0)
-            {
-                id = results[0]._id;
-                fn = results[0].FirstName;
-                ln = results[0].LastName;
-            }
-            else {
-                res.status(400).json({error: 'The username or password did not match'});
-            }
+    const { email, password } = req.body;
 
-            console.log(id)
-            let ret = { id: id, firstName: fn, lastName: ln, error: ''};
-            res.status(200).json(ret);
-        } catch(e) {
-            res.status(400).json({error: 'An error occured'});
-        }
-    });
+    try {
+        // find the doc in the db that matches the email and password
+      const result = await db
+        .collection("User")
+        .findOne({ email: email, password: password });
 
-    app.post("/api/register", async (req, res, next) => {
-        // incoming: email, password, firstName, lastName
-        // outgoing: userId, error
+      let id = -1;
+      let fn = "";
+      let ln = "";
 
-        const { email, password, firstName, lastName } = req.body;
-        let valid = true;
+      if (result != null) {
+        id = result._id;
+        fn = result.firstName;
+        ln = result.lastName;
+      } else {
+        res.status(200).json({ error: "The email or password did not match" });
+        return;
+      }
 
-        // duplicate email
-        if (valid) {
-            await db.collection('User').findOne({email : email.toLowerCase()}).then((user)=>{
-                if (user != null)
-                {
-                    valid = false;
-                    return res.status(200).json({ id: "-1", error: "Email already exists. Please enter a different email." });
-                }
-            }).catch(err=>{
-                return res.status(200).json({ id: "-1", error: err.message});
-            }) 
-        }
-    
-        if (valid)
+      let ret = { id: id, firstName: fn, lastName: ln, error: "" };
+      res.status(200).json(ret);
+    } catch (e) {
+      res.status(200).json({ error: "An error has occured" });
+      return;
+    }
+  });
+
+  //--------------------Register API--------------------//
+  app.post("/api/register", async (req, res, next) => {
+    // incoming: email, password, firstName, lastName
+    // outgoing: userId, error
+
+    const { email, password, firstName, lastName } = req.body;
+    let valid = true;
+
+    // duplicate email
+    if (valid) {
+      await db
+        .collection("User")
+        .findOne({ email: email.toLowerCase() })
+        .then((user) => {
+          if (user != null) {
+            valid = false;
+            return res
+              .status(200)
+              .json({
+                id: "-1",
+                error: "Email already exists. Please enter a different email.",
+              });
+          }
+        })
+        .catch((err) => {
+          return res.status(200).json({ id: "-1", error: err.message });
+        });
+    }
+
+    if (valid) {
+      const result = db.collection("User").insertOne(
         {
-            const result = db.collection('User').insertOne(
-                {
-                    firstName: firstName, 
-                    lastName: lastName, 
-                    password: password, 
-                    email: email.toLowerCase(),
-                },
-                function (err, user) {
-                    if (err) {
-                        response = {
-                            id: "-1",
-                            error: err.message
-                        };
-                    } else {
-                        console.log(user)
-                        response = {
-                            id: user.insertedId,
-                            error: ""
-                        };
-                    }
-                    res.status(200).json(response);
-                }
-            );
-        } 
-    });
-}
+          firstName: firstName,
+          lastName: lastName,
+          password: password,
+          email: email.toLowerCase(),
+        },
+        function (err, user) {
+          if (err) {
+            response = {
+              id: "-1",
+              error: err.message,
+            };
+          } else {
+            console.log(user);
+            response = {
+              id: user.insertedId,
+              error: "",
+            };
+          }
+          res.status(200).json(response);
+        }
+      );
+    }
+  });
+};
 
 // const validatePassword = (password, passwordVerify) => {
 //     let symbol = /[!@#$%&?]/.test(password);

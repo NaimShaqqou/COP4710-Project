@@ -1,6 +1,5 @@
 const app_name = 'cop4710-survey-project'
 export const buildPath = (route) => {
-    console.log(process.env.NODE_ENV)
     if (process.env.NODE_ENV === "production")
         return `https://${app_name}.herokuapp.com/${route}`;
     else

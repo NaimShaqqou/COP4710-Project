@@ -15,11 +15,26 @@ import {
   Link,
   Button,
   Grid,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 
-function LoginForm() {
-  const doLogin = async (values, { setErrors, setStatus }) => {
+// visibility icons
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+function LoginForm() {
+  // Logic for button to show/hide password
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const doLogin = async (values, { setErrors, setStatus }) => {
     // contains email and password
     let js = JSON.stringify(values);
 
@@ -121,11 +136,24 @@ function LoginForm() {
               <OutlinedInput
                 name="password"
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                      size="large"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
               {errors.password && touched.password && (
                 <FormHelperText error id="password-helper-text">

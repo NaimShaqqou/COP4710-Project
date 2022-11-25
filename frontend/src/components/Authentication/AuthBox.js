@@ -10,7 +10,7 @@ const AuthWrapper = styled("div")(({ theme }) => ({
   minHeight: "100vh",
 }));
 
-function AuthBox(props) {
+function AuthBox({ header, subtitle, form }) {
   return (
     <AuthWrapper>
       <Grid
@@ -45,26 +45,26 @@ function AuthBox(props) {
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                      <LockOutlinedIcon />
-                    </Avatar>
                     <Stack
                       alignItems="center"
                       justifyContent="center"
                       spacing={1}
                     >
+                      <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                        <LockOutlinedIcon />
+                      </Avatar>
                       <Typography gutterBottom variant={"h3"}>
-                        {props.header}
+                        {header}
                       </Typography>
                       <Typography
                         variant="caption"
                         fontSize="16px"
                         textAlign={"center"}
                       >
-                        {props.subtitle}
+                        {subtitle}
                       </Typography>
                     </Stack>
-                    {props.form}
+                    {form}
                   </Grid>
                 </Box>
               </Card>

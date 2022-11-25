@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import LoginPage from './pages/Authentication/LoginPage';
+import RegisterPage from './pages/Authentication/RegisterPage';
 
 // import {
 //   createTheme,
@@ -24,7 +25,8 @@ function App()
 
   return (
     // <ThemeProvider theme={theme}>
-      <LoginPage />
+      // <LoginPage />
+      <RegisterPage />
     // </ThemeProvider>
   );
 }

@@ -40,7 +40,42 @@ exports.setApp = function (app, db) {
         } catch(e) {
             res.status(400).json({error: 'An error occured'});
         }
+        finally{
+            await client.close();
+        }
     });
+
+    app.post('/api/createSurvey', async (req, res, next) => {
+        /* incoming: 
+                    1) title of survey 
+                    2) list of email addresses of survey participants
+                    3) description of the survey
+                    4) survey start date
+                    5) survey end date
+                    6) survey questionnaire
+                        ➢Type-1 (default) question receives a number between 1 and 5 as the answer, with 1 being most 
+                                negative and 5 most positive
+                        ➢ Type-2 question receives a text answer up to 200 words
+        */
+        let error = '';
+        const { survey_title, email_list, survey_description, survey_start, survey_end, survey_questions } = req.body;
+        try{
+            const doc = {
+                survey_title: "", 
+                email_list: "", 
+                survey_description: "", 
+                survey_start: "", 
+                survey_end: "", 
+                survey_questions: ""
+            }
+            const results = await db.collection('Survey').insertOne(doc);
+            console.log(`A document was inserted with the _id: ${results.insertedId}`);        }
+        catch(e){
+            res.status(400).json({error: 'An error occured'});
+
+        }
+    });
+
 }
 
 // const validatePassword = (password, passwordVerify) => {

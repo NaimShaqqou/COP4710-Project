@@ -1,82 +1,97 @@
 exports.setApp = function (app, db) {
-    // import mongoDB schemas and models
+  // ADD API ENDPOINTS UNDER HERE
 
-    // ADD API ENDPOINTS UNDER HERE
-    // EXAMPLES:
-    app.get("/api", (req, res) => {
-        res.json({ message: "Hello from server! (This is from an api call)" });
-    })
-    
-    app.post("/api/example", async (req, res, next) => {
-        console.log("called example api");
-    });
+  //--------------------login/password API--------------------//
+  app.post("/api/login", async (req, res, next) => {
+    // incoming: email, password
+    // outgoing: id, firstName, lastName, error
+    let error = "";
 
-    //////////////////STILL NEEDS WORK//////////////////////////
-    //--------------------login/password API--------------------//
-    app.post('/api/login', async (req, res, next) => {
-        // incoming: login, password
-        // outgoing: id, firstName, lastName, error
-        let error = '';
-        const { login, password } = req.body;
-        try {
-            const results = await db.collection('User').find({login: login}).toArray();
+    const { email, password } = req.body;
 
-            let id = -1;
-            let fn = '';
-            let ln = '';
-            if (results.length > 0)
-            {
-                id = results[0]._id;
-                fn = results[0].FirstName;
-                ln = results[0].LastName;
-            }
-            else {
-                res.status(400).json({error: 'The username or password did not match'});
-            }
+    try {
+        // find the doc in the db that matches the email and password
+      const result = await db
+        .collection("User")
+        .findOne({ email: email, password: password });
 
-            console.log(id)
-            let ret = { id: id, firstName: fn, lastName: ln, error: ''};
-            res.status(200).json(ret);
-        } catch(e) {
-            res.status(400).json({error: 'An error occured'});
+      let id = -1;
+      let fn = "";
+      let ln = "";
+
+      if (result != null) {
+        id = result._id;
+        fn = result.firstName;
+        ln = result.lastName;
+      } else {
+        res.status(200).json({ error: "The email or password did not match" });
+        return;
+      }
+
+      let ret = { id: id, firstName: fn, lastName: ln, error: "" };
+      res.status(200).json(ret);
+    } catch (e) {
+      res.status(200).json({ error: "An error has occured" });
+      return;
+    }
+  });
+
+  //--------------------Register API--------------------//
+  app.post("/api/register", async (req, res, next) => {
+    // incoming: email, password, firstName, lastName
+    // outgoing: userId, error
+
+    const { email, password, firstName, lastName } = req.body;
+    let valid = true;
+
+    // duplicate email
+    if (valid) {
+      await db
+        .collection("User")
+        .findOne({ email: email.toLowerCase() })
+        .then((user) => {
+          if (user != null) {
+            valid = false;
+            return res
+              .status(200)
+              .json({
+                id: "-1",
+                error: "Email already exists. Please enter a different email.",
+              });
+          }
+        })
+        .catch((err) => {
+          return res.status(200).json({ id: "-1", error: err.message });
+        });
+    }
+
+    if (valid) {
+      const result = db.collection("User").insertOne(
+        {
+          firstName: firstName,
+          lastName: lastName,
+          password: password,
+          email: email.toLowerCase(),
+        },
+        function (err, user) {
+          if (err) {
+            response = {
+              id: "-1",
+              error: err.message,
+            };
+          } else {
+            console.log(user);
+            response = {
+              id: user.insertedId,
+              error: "",
+            };
+          }
+          res.status(200).json(response);
         }
-        finally{
-            await client.close();
-        }
-    });
-
-    app.post('/api/createSurvey', async (req, res, next) => {
-        /* incoming: 
-                    1) title of survey 
-                    2) list of email addresses of survey participants
-                    3) description of the survey
-                    4) survey start date
-                    5) survey end date
-                    6) survey questionnaire
-                        ➢Type-1 (default) question receives a number between 1 and 5 as the answer, with 1 being most 
-                                negative and 5 most positive
-                        ➢ Type-2 question receives a text answer up to 200 words
-        */
-        let error = '';
-        const { survey_title, email_list, survey_description, survey_start, survey_end, survey_questions } = req.body;
-        try{
-            const doc = {
-                survey_title: "", 
-                email_list: "", 
-                survey_description: "", 
-                survey_start: "", 
-                survey_end: "", 
-                survey_questions: ""
-            }
-            const results = await db.collection('Survey').insertOne(doc);
-            console.log(`A document was inserted with the _id: ${results.insertedId}`);        }
-        catch(e){
-            res.status(400).json({error: 'An error occured'});
-
-        }
-    });
-
-}
+      );
+    }
+  });
+};
 
 // const validatePassword = (password, passwordVerify) => {
 //     let symbol = /[!@#$%&?]/.test(password);

@@ -1,7 +1,6 @@
 import React from "react";
 
 import { Formik } from "formik";
-
 import * as Yup from "yup";
 
 import { buildPath } from "../../buildPath";
@@ -23,7 +22,14 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
+import { useDispatch } from "react-redux";
+import { updateCurrentUser } from "../../store/ActionCreators/";
+import { useNavigate } from "react-router-dom";
+
 function LoginForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   // Logic for button to show/hide password
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -62,8 +68,9 @@ function LoginForm() {
         };
 
         localStorage.setItem("user_data", JSON.stringify(user));
-        alert("login successful!");
-        // window.location.href = '/test';
+        dispatch(updateCurrentUser(user));
+
+        navigate("../");
       }
     } catch (e) {
       setStatus({ success: false });

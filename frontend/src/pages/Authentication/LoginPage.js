@@ -1,6 +1,6 @@
 import React from "react";
 import AuthBox from "../../components/Authentication/AuthBox";
-import LoginForm from "../../components/Authentication/LoginForm"
+import LoginForm from "../../components/Authentication/LoginForm";
 
 function LoginPage() {
   return (

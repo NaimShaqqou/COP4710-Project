@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 
 const AuthWrapper = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.primary.light,
-  minHeight: "100vh",
+  // minHeight: "100vh",
 }));
 
 function AuthBox({ header, subtitle, form }) {
@@ -17,14 +17,14 @@ function AuthBox({ header, subtitle, form }) {
         container
         direction="column"
         justifyContent="flex-end"
-        sx={{ minHeight: "100vh" }}
+        // sx={{ minHeight: "100vh" }}
       >
         <Grid item xs={12}>
           <Grid
             container
             justifyContent="center"
             alignItems="center"
-            sx={{ minHeight: "calc(100vh - 68px)" }}
+            sx={{ minHeight: "calc(100vh - 64px)" }}
           >
             <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
               <Card

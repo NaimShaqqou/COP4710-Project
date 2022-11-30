@@ -1,16 +1,16 @@
-import React from 'react';
-import './App.css';
-import LoginPage from './pages/Authentication/LoginPage';
-import RegisterPage from './pages/Authentication/RegisterPage';
+import React from "react";
+import "./App.css";
+import NavBar from "./components/NavBar";
+
+import Router from "./routes/Router";
+import { BrowserRouter } from "react-router-dom";
 
 // import {
 //   createTheme,
 //   ThemeProvider,
 // } from "@mui/material";
 
-function App() 
-{
-
+function App() {
   // const theme = createTheme({
   //   typography: {
   //     fontFamily: [
@@ -25,9 +25,13 @@ function App()
 
   return (
     // <ThemeProvider theme={theme}>
-      // <LoginPage />
-      <RegisterPage />
     // </ThemeProvider>
+    <div>
+      <BrowserRouter>
+        <NavBar />
+        <Router />
+      </BrowserRouter>
+    </div>
   );
 }
 export default App;

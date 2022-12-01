@@ -115,7 +115,6 @@ function LoginForm() {
                 id="email"
                 name="email"
                 label="Email"
-                autoFocus
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.email}
@@ -179,7 +178,7 @@ function LoginForm() {
             <Grid container>
               <Grid item xs></Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

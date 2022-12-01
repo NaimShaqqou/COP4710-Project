@@ -5,7 +5,7 @@ import LoginForm from "../../components/Authentication/LoginForm"
 function LoginPage() {
   return (
     <AuthBox
-      header="Hi, Welcome Back"
+      header="Sign In"
       subtitle="Enter your credentials to continue"
       form={<LoginForm />}
     />

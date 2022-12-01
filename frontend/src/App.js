@@ -1,7 +1,8 @@
 import React from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
-
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import Router from "./routes/Router";
 import { BrowserRouter } from "react-router-dom";
 
@@ -9,6 +10,12 @@ import { BrowserRouter } from "react-router-dom";
 //   createTheme,
 //   ThemeProvider,
 // } from "@mui/material";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
   // const theme = createTheme({
@@ -27,6 +34,9 @@ function App() {
     // <ThemeProvider theme={theme}>
     // </ThemeProvider>
     <div>
+      {/* <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+      </ThemeProvider> */}
       <BrowserRouter>
         <NavBar />
         <Router />

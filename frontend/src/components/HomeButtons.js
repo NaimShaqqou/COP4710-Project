@@ -20,7 +20,7 @@ function HomeButtons() {
         </>
       ) : (
         <>
-          <Button variant="contained">Create a Survey</Button>
+          <Button variant="contained" onClick={() => navigate("/createSurvey")}>Create a Survey</Button>
           <Button variant="outlined">Take a Survey</Button>
         </>
       )}

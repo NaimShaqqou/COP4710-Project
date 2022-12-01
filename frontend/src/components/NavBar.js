@@ -18,6 +18,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../store/ActionCreators";
 
 const pages = [
   { item: "Create Survey", link: "/" },
@@ -36,8 +38,11 @@ const authSettings = [
 ];
 
 function NavBar() {
+  // get information about the current user
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
-  const [auth, setAuth] = React.useState(false);
 
   // for navbar menus
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -59,7 +64,9 @@ function NavBar() {
     setAnchorElUser(null);
   };
 
-  const handleSettingsClick = (pageLink) => {
+  const handleSettingsClick = ({ pressedButton, pageLink }) => {
+    if (pressedButton === "Logout") dispatch(logoutUser());
+
     navigate(pageLink);
     handleCloseUserMenu();
     handleCloseNavMenu();
@@ -149,7 +156,12 @@ function NavBar() {
             {pages.map((page) => (
               <Button
                 key={page.item}
-                onClick={() => handleSettingsClick(page.link)}
+                onClick={() =>
+                  handleSettingsClick({
+                    pressedButton: page.item,
+                    pageLink: page.link,
+                  })
+                }
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page.item}
@@ -179,10 +191,15 @@ function NavBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {(auth ? settings : authSettings).map((setting) => (
+              {(user.id !== "" ? settings : authSettings).map((setting) => (
                 <MenuItem
                   key={setting.item}
-                  onClick={() => handleSettingsClick(setting.link)}
+                  onClick={() =>
+                    handleSettingsClick({
+                      pressedButton: setting.item,
+                      pageLink: setting.link,
+                    })
+                  }
                 >
                   <Typography textAlign="center">{setting.item}</Typography>
                 </MenuItem>

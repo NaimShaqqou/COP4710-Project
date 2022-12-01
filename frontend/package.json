@@ -26,6 +26,10 @@
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+ },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

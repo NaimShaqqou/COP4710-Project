@@ -5,10 +5,11 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server.js",
+    "server": "node server.js",
     "client": "cd frontend && npm start && cd ..",
     "start:dev": "nodemon server.js",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "s": "concurrently \"npm run start:dev\" \"npm run client\"",
+    "start": "npm run server",
     "setup": "cd frontend && npm i && cd .. && npm i",
     ":start": "node index.js",
     "build": "cd frontend && npm install && npm run build"

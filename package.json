@@ -12,7 +12,7 @@
     "start": "npm run server",
     "setup": "cd frontend && npm i && cd .. && npm i",
     ":start": "node index.js",
-    "build": "cd frontend && npm install && npm run build"
+    "build": "cd frontend && npm install --ignore-peer-deps && npm run build"
   },
   "repository": {
     "type": "git",

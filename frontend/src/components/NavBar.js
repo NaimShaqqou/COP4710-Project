@@ -22,8 +22,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../store/ActionCreators";
 
 const pages = [
-  { item: "Create Survey", link: "/" },
-  { item: "View Surveys", link: "/" },
+  { item: "Create Survey", link: "/createSurvey" },
+  { item: "View Surveys", link: "/viewSurveys" },
 ];
 
 const settings = [
@@ -171,9 +171,16 @@ function NavBar() {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar />
-              </IconButton>
+              {user.id !== "" ? (
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar />
+                </IconButton>
+              ) : (
+                <Button onClick={handleOpenUserMenu} sx={{ my: 2, color: "white", display: "block" }}>
+                  Sign in
+                </Button>
+              )
+              }
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}

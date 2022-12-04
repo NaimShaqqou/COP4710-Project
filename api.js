@@ -1,5 +1,7 @@
+const { ObjectId } = require("mongodb");
+
 exports.setApp = function (app, db) {
-  ObjectId = require("mongodb").ObjectId;
+  let ObjectId = require("mongodb").ObjectId;
   // ADD API ENDPOINTS UNDER HERE
 
   //--------------------login/password API--------------------//
@@ -118,6 +120,90 @@ exports.setApp = function (app, db) {
       }
 
       res.status(200).json(surveyList);
+
+    } catch (err) {
+      res.status(200).json({ error: err.message });
+    }
+  });
+
+  //--------------------Get Questions API--------------------//
+  app.post("/api/getQuestions", async (req, res, next) => {
+    // incoming: surveyId
+    // outgoing: questionsList
+
+    const { surveyId } = req.body;
+
+    try {
+
+      // gets all the documents from the collection
+      let result = await db.collection("Questions")
+        .find({ surveyId: ObjectId(surveyId) })
+        .sort({ question_num: 1 })
+        .toArray();
+
+      let questionsList = [];
+      for (const item of result) {
+        if (item.type === "rating") {
+          questionsList.push({
+            ...item,
+            type: "slider",
+            min: 1,
+            max: 5,
+            step: 1,
+            name: `${item.question_num}`
+          })
+        } else {
+          questionsList.push({
+            ...item,
+            type: "multiline-text",
+            name: `${item.question_num}`,
+            validators: [{
+              type: "text",
+              maxLength: 200,
+              text: "Maximum Length Exceeded!"
+            }]
+          })
+        }
+      }
+
+      res.status(200).json(questionsList);
+
+    } catch (err) {
+      res.status(200).json({ error: err.message });
+    }
+  });
+
+  //--------------------Submit Survey API--------------------//
+  app.post("/api/submitSurvey", async (req, res, next) => {
+    // incoming: userId, surveyId, answersList
+    // outgoing: error
+
+    const { userId, surveyId, answersList } = req.body;
+
+    try {
+      // create a new survey submission for the user
+      const result = db.collection("Survey Attempts").insertOne(
+        {
+          userId: ObjectId(userId),
+          surveyId: ObjectId(surveyId),
+          answers: Object.values(answersList),
+        },
+        function (err, submission) {
+          if (err) {
+            response = {
+              id: "-1",
+              error: err.message,
+            };
+          } else {
+            console.log(submission);
+            response = {
+              id: submission.insertedId,
+              error: "",
+            };
+          }
+          res.status(200).json(response);
+        }
+      );
 
     } catch (err) {
       res.status(200).json({ error: err.message });

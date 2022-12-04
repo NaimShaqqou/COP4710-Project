@@ -1,7 +1,11 @@
 import React from 'react'
 import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material"
 
+import { useNavigate } from 'react-router-dom'
+
 function SurveyCard({ id, title, participants, description, start, end }) {
+    const navigate = useNavigate();
+
     return (
         <Grid sx={{ mt: 5 }}>
             <Paper elevation={5}>
@@ -14,7 +18,7 @@ function SurveyCard({ id, title, participants, description, start, end }) {
                                     {/* {service.Title} */}
                                     {title}
                                 </Typography>
-                                <Button>
+                                <Button onClick={() => navigate("/takeSurvey", { state: { surveyId: id } })}>
                                     Take Survey
                                 </Button>
                             </Box>

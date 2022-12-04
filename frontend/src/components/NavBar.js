@@ -126,7 +126,10 @@ function NavBar() {
               {pages.map((page) => (
                 <MenuItem
                   key={page.item}
-                  onClick={() => handleSettingsClick(page.link)}
+                  onClick={() => handleSettingsClick({
+                    pressedButton: page.item,
+                    pageLink: page.link,
+                  })}
                 >
                   <Typography textAlign="center">{page.item}</Typography>
                 </MenuItem>

@@ -28,14 +28,24 @@ function SurveyCard({ id, title, participants, description, start, end }) {
                                 >
                                     {description}
                                 </Typography>
-                                <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                    sx={{ wordWrap: "break-word" }}
-                                    component="container"
-                                >
-                                    {start.toLocaleDateString()}-{end.toLocaleDateString()}
-                                </Typography>
+                                <Stack>
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
+                                        sx={{ wordWrap: "break-word" }}
+                                        component="container"
+                                    >
+                                        Start: {new Date(start).toLocaleDateString()}
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
+                                        sx={{ wordWrap: "break-word" }}
+                                        component="container"
+                                    >
+                                        End: &nbsp;&nbsp;{new Date(end).toLocaleDateString()}
+                                    </Typography>
+                                </Stack>
                             </Box>
                         </Stack>
                     </Grid>

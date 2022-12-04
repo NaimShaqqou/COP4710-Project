@@ -6,7 +6,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { styled } from "@mui/material/styles";
 
 const AuthWrapper = styled("div")(({ theme }) => ({
-  backgroundColor: theme.palette.primary.light,
+  // backgroundColor: theme.palette.primary.dark,
   // minHeight: "100vh",
 }));
 

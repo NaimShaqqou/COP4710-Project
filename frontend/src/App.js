@@ -34,13 +34,13 @@ function App() {
     // <ThemeProvider theme={theme}>
     // </ThemeProvider>
     <div>
-      {/* <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-      </ThemeProvider> */}
-      <BrowserRouter>
-        <NavBar />
-        <Router />
-      </BrowserRouter>
+        <BrowserRouter>
+          <NavBar />
+          <Router />
+        </BrowserRouter>
+      </ThemeProvider>
     </div>
   );
 }

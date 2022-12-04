@@ -1,34 +1,36 @@
 exports.setApp = function (app, db) {
+  ObjectId = require("mongodb").ObjectId;
   // ADD API ENDPOINTS UNDER HERE
 
   //--------------------login/password API--------------------//
   app.post("/api/login", async (req, res, next) => {
     // incoming: email, password
-    // outgoing: id, firstName, lastName, error
+    // outgoing: id, firstName, lastName, email, error
     let error = "";
 
     const { email, password } = req.body;
 
     try {
-        // find the doc in the db that matches the email and password
+      // find the doc in the db that matches the email and password
       const result = await db
         .collection("User")
-        .findOne({ email: email, password: password });
+        .findOne({ email: email.toLowerCase(), password: password });
 
       let id = -1;
       let fn = "";
       let ln = "";
 
       if (result != null) {
-        id = result._id;
+        id = result._id.valueOf();
         fn = result.firstName;
         ln = result.lastName;
+        // email = result.email;
       } else {
         res.status(200).json({ error: "The email or password did not match" });
         return;
       }
 
-      let ret = { id: id, firstName: fn, lastName: ln, error: "" };
+      let ret = { id: id, firstName: fn, lastName: ln, email: email, error: "" };
       res.status(200).json(ret);
     } catch (e) {
       res.status(200).json({ error: "An error has occured" });
@@ -91,20 +93,34 @@ exports.setApp = function (app, db) {
       );
     }
   });
+
+  //--------------------Get Surveys API--------------------//
+  app.post("/api/getSurveys", async (req, res, next) => {
+    // incoming: userId
+    // outgoing: surveyList
+
+    const { userId } = req.body;
+
+    try {
+
+      // gets all the documents from the collection
+      let result = await db.collection("Survey").find().toArray()
+
+      let surveyList = [];
+      for (const item of result) {
+        let surveyAttempt = await db.collection("Survey Attempts").findOne({ userId: ObjectId(userId), surveyId: item._id });
+
+        if (surveyAttempt != null) {
+          surveyList.push({ ...item, is_taken: true })
+        } else {
+          surveyList.push({ ...item, is_taken: false })
+        }
+      }
+
+      res.status(200).json(surveyList);
+
+    } catch (err) {
+      res.status(200).json({ error: err.message });
+    }
+  });
 };
-
-// const validatePassword = (password, passwordVerify) => {
-//     let symbol = /[!@#$%&?]/.test(password);
-//     let upperCase = /[A-Z]/.test(password);
-//     let length = password.length >= 8;
-//     let match = password === passwordVerify && password && passwordVerify;
-//     return symbol && upperCase && length && match;
-//   };
-
-// const validateEmail = (email) => {
-//   return String(email)
-//   .toLowerCase()
-//   .match(
-//       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-//   );
-// };

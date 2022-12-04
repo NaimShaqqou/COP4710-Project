@@ -3,6 +3,7 @@ const reducer = (
     firstName: "",
     lastName: "",
     id: "",
+    email: "",
   },
   action
 ) => {
@@ -14,6 +15,7 @@ const reducer = (
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
         id: action.payload.id,
+        email: action.payload.email,
       };
     case "logout":
       return {
@@ -21,6 +23,7 @@ const reducer = (
         firstName: "",
         lastName: "",
         id: "",
+        email: "",
       };
     default:
       return state;

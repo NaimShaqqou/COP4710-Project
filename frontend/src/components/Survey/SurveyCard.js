@@ -3,7 +3,7 @@ import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material"
 
 import { useNavigate } from 'react-router-dom'
 
-function SurveyCard({ id, title, participants, description, start, end }) {
+function SurveyCard({ id, title, participants, description, start, end, is_taken }) {
     const navigate = useNavigate();
 
     return (
@@ -18,9 +18,16 @@ function SurveyCard({ id, title, participants, description, start, end }) {
                                     {/* {service.Title} */}
                                     {title}
                                 </Typography>
-                                <Button onClick={() => navigate("/takeSurvey", { state: { surveyId: id } })}>
-                                    Take Survey
-                                </Button>
+                                {is_taken ? (
+                                    <Button color="success">
+                                        Completed
+                                    </Button>
+                                ) : (
+
+                                    <Button onClick={() => navigate("/takeSurvey", { state: { surveyId: id } })}>
+                                        Take Survey
+                                    </Button>
+                                )}
                             </Box>
 
                             <Box sx={{ px: 3, pb: 3, display: "flex", justifyContent: "space-between" }}>

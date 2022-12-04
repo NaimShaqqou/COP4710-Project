@@ -60,6 +60,7 @@ function ViewSurveys() {
                             description={survey.description_survey}
                             start={survey.start_survey}
                             end={survey.end_survey}
+                            is_taken={survey.is_taken}
                         />
                     ))}
                 </Container>

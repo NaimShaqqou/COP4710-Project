@@ -1,7 +1,7 @@
 import React from "react";
 
 import Survey from "material-survey/components/Survey";
-import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Typography } from "@mui/material";
 
 import { buildPath } from "../buildPath";
 import { useSelector } from "react-redux";
@@ -90,17 +90,29 @@ function TakeSurvey() {
                     </Button>
                 </DialogActions>
             </Dialog>
-            {surveyQuestions.length > 0 && (
-                <Survey
-                    onFinish={answers => {
-                        handleSurveySubmission(answers, user.id, location.state.surveyId)
-                        console.log(answers)
-                    }}
-                    form={{
-                        questions: surveyQuestions
-                    }}
-                />
-            )}
+            <Box
+                sx={{
+                    bgcolor: "background.paper",
+                    pt: 8,
+                    pb: 6,
+                }}
+            >
+
+                <Typography variant="h2">
+                    {location.state.title}
+                </Typography>
+                {surveyQuestions.length > 0 && (
+                    <Survey
+                        onFinish={answers => {
+                            handleSurveySubmission(answers, user.id, location.state.surveyId)
+                            console.log(answers)
+                        }}
+                        form={{
+                            questions: surveyQuestions
+                        }}
+                    />
+                )}
+            </Box>
         </Container>
     )
 }

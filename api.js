@@ -209,4 +209,53 @@ exports.setApp = function (app, db) {
       res.status(200).json({ error: err.message });
     }
   });
+
+  //--------------------Create Survey API--------------------//
+  app.post("/api/createSurvey", async (req, res, next) => {
+    // incoming: 
+    // outgoing: 
+
+    const { 
+      title_survey,
+      description_survey,
+      participants_emails,
+      start_survey,
+      end_survey,
+      questions_survey,
+      type1_questions,
+      type2_questions
+    } = req.body;
+    let valid = true;
+
+
+    if (valid) {
+      const result = db.collection("Survey").insertOne(
+        {
+            title_survey: title_survey,
+            description_survey: description_survey,
+            participants_emails: participants_emails,
+            start_survey: start_survey,
+            end_survey: end_survey,
+            questions_survey: questions_survey,
+            type1_questions: type1_questions,
+            type2_questions: type2_questions
+        },
+        function (err, submission) {
+          if (err) {
+            response = {
+              id: "-1",
+              error: err.message,
+            };
+          } else {
+            console.log(submission);
+            response = {
+              id: submission.insertedId,
+              error: "",
+            };
+          }
+          res.status(200).json(response);
+        }
+      );
+    }
+  });
 };

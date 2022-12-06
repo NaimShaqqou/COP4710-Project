@@ -1,8 +1,24 @@
 import { Typography } from '@mui/material'
+import { createCipheriv } from 'crypto';
 import React from 'react'
+
+// const fs = require('fs');
+// getDocuments(db, function(docs) {
+//     console.log('Closing connection.');
+//     client.close();
+
+//     // write to file
+//     try{
+//         fs.writeFileSync('out_file.json', JSON.stringify(docs));
+//         console.log('Finished writing');
+//     }catch(err) {
+//         console.log('Error writing', err);
+//     }
+// });
 
 function SurveyResults({ }) {
     const [surveyQuestions, setSurveyQuestions] = React.useState([]);
+
     async function fetchQuestions() {
         // let js = JSON.stringify({ surveyId: location.state.surveyId });
 

@@ -1,0 +1,53 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "Survey Application",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "server": "node server.js",
+        "client": "cd frontend && npm start && cd ..",
+        "start:dev": "nodemon server.js",
+        "s": "concurrently \"npm run start:dev\" \"npm run client\"",
+        "start": "npm run server",
+        "setup": "cd frontend && npm i && cd .. && npm i",
+        ":start": "node index.js",
+        "build": "cd frontend && npm install --legacy-peer-deps && npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NaimShaqqou/COP4710-Project.git"
+    },
+    "author": "group9",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/NaimShaqqou/COP4710-Project/issues"
+    },
+    "homepage": "https://github.com/NaimShaqqou/COP4710-Project#readme",
+    "devDependencies": {
+        "nodemon": "^2.0.20"
+    },
+    "dependencies": {
+        "@material-ui/core": "^5.0.0-beta.5",
+        "@mui/x-date-pickers": "^5.0.9",
+        "@mui/x-date-pickers-pro": "^5.0.9",
+        "axios": "^1.1.3",
+        "body-parser": "^1.19.0",
+        "bootstrap": "^5.2.2",
+        "concurrently": "^7.6.0",
+        "cors": "^2.8.5",
+        "date-fns": "^2.29.3",
+        "dayjs": "^1.11.6",
+        "dotenv": "^16.0.3",
+        "ejs": "^3.1.8",
+        "express": "^4.18.2",
+        "litepicker": "^2.0.12",
+        "mongodb": "^4.12.0",
+        "mongoose": "^6.7.2",
+        "react-date-range": "^1.4.0",
+        "react-router-dom": "^6.4.3",
+        "survey-creator-react": "^1.9.61",
+        "survey-react": "^1.9.61",
+        "survey-react-ui": "^1.9.61"
+    }
+}

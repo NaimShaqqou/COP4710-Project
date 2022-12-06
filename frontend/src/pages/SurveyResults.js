@@ -14,6 +14,21 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 
 import { buildPath } from "../buildPath";
+import { createCipheriv } from 'crypto';
+
+// const fs = require('fs');
+// getDocuments(db, function(docs) {
+//     console.log('Closing connection.');
+//     client.close();
+
+//     // write to file
+//     try{
+//         fs.writeFileSync('out_file.json', JSON.stringify(docs));
+//         console.log('Finished writing');
+//     }catch(err) {
+//         console.log('Error writing', err);
+//     }
+// });
 
 import { QuestionAnswer, ExpandMore } from "@mui/icons-material";
 

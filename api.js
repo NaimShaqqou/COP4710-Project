@@ -210,6 +210,58 @@ exports.setApp = function (app, db) {
     }
   });
 
+  //--------------------Create Survey API--------------------//
+  app.post("/api/createSurvey", async (req, res, next) => {
+    // incoming: title_survey, description_survey, participants_emails, start_survey, end_survey, questions_survey,
+    // outgoing: id, error
+
+    const {
+      userId,
+      title_survey,
+      description_survey,
+      participants_emails,
+      start_survey,
+      end_survey,
+      questions_survey,
+    } = req.body;
+    let valid = true;
+
+
+    try {
+      const result = db.collection("Survey").insertOne(
+        {
+          userId: ObjectId(userId),
+          title_survey: title_survey,
+          description_survey: description_survey,
+          participants_emails: participants_emails,
+          start_survey: start_survey,
+          end_survey: end_survey,
+        },
+        function (err, submission) {
+          if (err) {
+            response = {
+              id: "-1",
+              error: err.message,
+            };
+          } else {
+            console.log(submission);
+            for (question of questions_survey) {
+              question["surveyId"] = ObjectId(submission.insertedId)
+            }
+
+            let res = db.collection("Questions").insertMany(questions_survey)
+            response = {
+              id: submission.insertedId,
+              error: "",
+            };
+          }
+          res.status(200).json(response);
+        }
+      );
+    } catch (err) {
+      res.status(200).json({ error: err.message });
+    }
+  })
   //--------------------Delete Survey API--------------------//
   app.post("/api/deleteSurvey", async (req, res, next) => {
     // incoming: surveyId

@@ -27,7 +27,7 @@ const pages = [
 ];
 
 const settings = [
-  { item: "My Surveys", link: "/" },
+  { item: "My Surveys", link: "/mySurveys" },
   { item: "Profile", link: "/" },
   { item: "Logout", link: "/" },
 ];

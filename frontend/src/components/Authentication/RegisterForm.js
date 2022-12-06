@@ -23,8 +23,10 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // password strength bar
 import PasswordStrengthBar from "react-password-strength-bar";
 import { buildPath } from "../../buildPath";
+import { useNavigate } from "react-router-dom";
 
 function RegisterForm() {
+  const navigate = useNavigate();
   // Logic for button to show/hide password
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -50,8 +52,9 @@ function RegisterForm() {
       let res = JSON.parse(await response.text());
 
       if (res.error === "") {
-      setStatus({ success: true });
-      alert("success");
+        setStatus({ success: true });
+        // alert("success");
+        navigate("/login");
       } else {
         setStatus({ success: false });
         setErrors({ submit: res.error });

@@ -48,7 +48,7 @@ function MySurveys() {
             >
                 <Container maxWidth="lg">
                     <Typography variant="h2">
-                        Available Surveys
+                        My Surveys
                     </Typography>
 
                     {surveyList.length > 0 && surveyList.map((survey) => (

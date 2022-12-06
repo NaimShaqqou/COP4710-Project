@@ -11,7 +11,6 @@ import render from 'react-dom'
 export default function CreateSurveyPage() {
 
   return (
-    <CreateSurvey></CreateSurvey>
-
+    <CreateSurvey />
   );
 }

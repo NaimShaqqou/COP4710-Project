@@ -212,33 +212,30 @@ exports.setApp = function (app, db) {
 
   //--------------------Create Survey API--------------------//
   app.post("/api/createSurvey", async (req, res, next) => {
-    // incoming: 
-    // outgoing: 
+    // incoming: title_survey, description_survey, participants_emails, start_survey, end_survey, questions_survey,
+    // outgoing: id, error
 
-    const { 
+    const {
+      userId,
       title_survey,
       description_survey,
       participants_emails,
       start_survey,
       end_survey,
       questions_survey,
-      type1_questions,
-      type2_questions
     } = req.body;
     let valid = true;
 
 
-    if (valid) {
+    try {
       const result = db.collection("Survey").insertOne(
         {
-            title_survey: title_survey,
-            description_survey: description_survey,
-            participants_emails: participants_emails,
-            start_survey: start_survey,
-            end_survey: end_survey,
-            questions_survey: questions_survey,
-            type1_questions: type1_questions,
-            type2_questions: type2_questions
+          userId: ObjectId(userId),
+          title_survey: title_survey,
+          description_survey: description_survey,
+          participants_emails: participants_emails,
+          start_survey: start_survey,
+          end_survey: end_survey,
         },
         function (err, submission) {
           if (err) {
@@ -248,6 +245,11 @@ exports.setApp = function (app, db) {
             };
           } else {
             console.log(submission);
+            for (question of questions_survey) {
+              question["surveyId"] = ObjectId(submission.insertedId)
+            }
+
+            let res = db.collection("Questions").insertMany(questions_survey)
             response = {
               id: submission.insertedId,
               error: "",
@@ -256,6 +258,8 @@ exports.setApp = function (app, db) {
           res.status(200).json(response);
         }
       );
+    } catch (err) {
+      res.status(200).json({ error: err.message });
     }
   });
 };

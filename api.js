@@ -126,6 +126,27 @@ exports.setApp = function (app, db) {
     }
   });
 
+  //--------------------Get Surveys API--------------------//
+  app.post("/api/getMySurveys", async (req, res, next) => {
+    // incoming: userId
+    // outgoing: surveyList
+
+    const { userId } = req.body;
+
+    try {
+
+      // gets all the documents from the collection
+      let surveyList = []
+      surveyList = await db.collection("Survey").find({ userId: ObjectId(userId) }).toArray()
+
+
+      res.status(200).json(surveyList);
+
+    } catch (err) {
+      res.status(200).json({ error: err.message });
+    }
+  });
+
   //--------------------Get Questions API--------------------//
   app.post("/api/getQuestions", async (req, res, next) => {
     // incoming: surveyId
@@ -224,7 +245,6 @@ exports.setApp = function (app, db) {
       end_survey,
       questions_survey,
     } = req.body;
-    let valid = true;
 
 
     try {

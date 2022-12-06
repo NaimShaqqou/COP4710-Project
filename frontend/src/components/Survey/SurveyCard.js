@@ -1,10 +1,53 @@
 import React from 'react'
 import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material"
 
+import { buildPath } from '../../buildPath';
+
 import { useNavigate } from 'react-router-dom'
 
-function SurveyCard({ id, title, participants, description, start, end, is_taken }) {
+function SurveyCard({ id, title, participants, description, start, end, is_taken, my_survey }) {
     const navigate = useNavigate();
+
+    const doDelete = async () => {
+        const js = JSON.stringify({ surveyId: id });
+
+        try {
+            try {
+                const response = await fetch(buildPath("api/deleteSurvey"), {
+                    method: "POST",
+                    body: js,
+                    headers: { "Content-Type": "application/json" },
+                });
+
+            } catch (e) {
+                console.log(e)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const WhichButton = () => {
+        if (my_survey) {
+            return (
+                <Button color="error" onClick={() => doDelete()}>
+                    Delete
+                </Button>
+            )
+        } else if (is_taken) {
+            return (
+                <Button color="success">
+                    Completed
+                </Button>
+            )
+        }
+
+        return (
+            <Button onClick={() => navigate("/takeSurvey", { state: { surveyId: id, title: title } })}>
+                Take Survey
+            </Button>
+        )
+    }
 
     return (
         <Grid sx={{ mt: 5 }}>
@@ -18,16 +61,7 @@ function SurveyCard({ id, title, participants, description, start, end, is_taken
                                     {/* {service.Title} */}
                                     {title}
                                 </Typography>
-                                {is_taken ? (
-                                    <Button color="success">
-                                        Completed
-                                    </Button>
-                                ) : (
-
-                                    <Button onClick={() => navigate("/takeSurvey", { state: { surveyId: id, title: title } })}>
-                                        Take Survey
-                                    </Button>
-                                )}
+                                <WhichButton />
                             </Box>
 
                             <Box sx={{ px: 3, pb: 3, display: "flex", justifyContent: "space-between" }}>

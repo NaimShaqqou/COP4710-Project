@@ -35,7 +35,7 @@ function CreateSurvey2() {
     const navigate = useNavigate();
 
     const doCreateSurvey = async (values, { setErrors, setStatus }) => {
-        let js = JSON.stringify(values);
+        let js = JSON.stringify({ ...values, userId: user.id });
 
         try {
             const response = await fetch(buildPath("api/createSurvey"), {
@@ -59,7 +59,6 @@ function CreateSurvey2() {
             </Typography>
             <Formik
                 initialValues={{
-                    userId: user._id,
                     title_survey: '',
                     description_survey: '',
                     participants_emails: [
@@ -77,13 +76,13 @@ function CreateSurvey2() {
                         }
                     ],
                 }}
-                validationSchema={Yup.object().shape({
-                    title_survey: Yup.string()
-                        .required("Survey title is required"),
-                    email: Yup.string().email().max(255).required("Email is required"),
-                    start_survey: Yup.string().required("Start date is required"),
-                    end_survey: Yup.date().required("End date is required"),
-                })}
+                // validationSchema={Yup.object().shape({
+                //     title_survey: Yup.string()
+                //         .required("Survey title is required"),
+                //     email: Yup.string().email().max(255).required("Email is required"),
+                //     start_survey: Yup.string().required("Start date is required"),
+                //     end_survey: Yup.date().required("End date is required"),
+                // })}
                 onSubmit={(values, { setSubmitting, setErrors, setStatus }) => {
                     console.log("submitting...");
                     setSubmitting(true);

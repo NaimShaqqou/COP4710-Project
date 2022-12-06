@@ -9,6 +9,7 @@ import TakeSurvey from "../pages/TakeSurvey"
 import ViewSurveys from "../pages/ViewSurveys"
 import Home from "../pages/Home";
 import MySurveys from "../pages/MySurveys";
+import SurveyResults from "../pages/SurveyResults";
 
 function Router() {
   return (
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/takeSurvey" element={<TakeSurvey/>} />
       <Route path="/viewSurveys" element={<ViewSurveys/>} />
       <Route path="/mySurveys" element={<MySurveys/>} />
+      <Route path="/surveyResults" element={<SurveyResults/>} />
     </Routes>
   );
 }

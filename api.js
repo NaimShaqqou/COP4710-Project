@@ -137,7 +137,10 @@ exports.setApp = function (app, db) {
 
       // gets all the documents from the collection
       let surveyList = []
-      surveyList = await db.collection("Survey").find({ userId: ObjectId(userId) }).toArray()
+      surveyList = await db.collection("Survey")
+        .find({ userId: ObjectId(userId) })
+        .sort({ end_survey: 1 })
+        .toArray()
 
 
       res.status(200).json(surveyList);
@@ -303,4 +306,46 @@ exports.setApp = function (app, db) {
     }
 
   });
+
+  //--------------------get answers API--------------------//
+  app.post("/api/getAnswers", async (req, res, next) => {
+    // incoming: surveyId
+    // outgoing: answersList
+
+    let { surveyId } = req.body;
+
+    let answersList = [];
+
+    try {
+      let questionsList = await db.collection("Questions")
+        .find({ surveyId: ObjectId(surveyId) })
+        .sort({ question_num: 1 })
+        .toArray();
+
+      let result = await db.collection("Survey Attempts")
+        .find({ surveyId: ObjectId(surveyId) })
+        .sort({ question_num: 1 })
+        .toArray();
+
+      for (i = 0; i < questionsList.length; i++) {
+        if (questionsList[i].type === "rating") {
+          answersList.push({ type: 1, answers: [] })
+        } else {
+          answersList.push({ type: 2, answers: [] })
+        }
+
+        for (attempt of result) {
+          answersList[i].answers.push(attempt.answers[i])
+        }
+      }
+
+
+      res.status(200).json({ answersList: answersList, error: "" });
+
+    } catch (err) {
+      res.status(200).json({ error: err.message });
+    }
+
+  });
+
 };

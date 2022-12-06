@@ -261,5 +261,26 @@ exports.setApp = function (app, db) {
     } catch (err) {
       res.status(200).json({ error: err.message });
     }
+  })
+  //--------------------Delete Survey API--------------------//
+  app.post("/api/deleteSurvey", async (req, res, next) => {
+    // incoming: surveyId
+    // outgoing: error
+
+    let { surveyId } = req.body;
+
+    try {
+      db.collection("Survey").deleteOne({ _id: ObjectId(surveyId) }, function (err, obj) {
+        if (err) {
+          res.status(200).json({ error: err.message });
+        }
+
+        console.log("deleted 1 survey")
+        res.status(200).json({ error: "" });
+      })
+    } catch (err) {
+      res.status(200).json({ error: err.message });
+    }
+
   });
 };

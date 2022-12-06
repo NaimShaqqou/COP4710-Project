@@ -24,7 +24,7 @@ function SurveyCard({ id, title, participants, description, start, end, is_taken
                                     </Button>
                                 ) : (
 
-                                    <Button onClick={() => navigate("/takeSurvey", { state: { surveyId: id } })}>
+                                    <Button onClick={() => navigate("/takeSurvey", { state: { surveyId: id, title: title } })}>
                                         Take Survey
                                     </Button>
                                 )}
